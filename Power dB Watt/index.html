@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+<h2>dB Power converter</h2>
+
+<p>Please input a number larger than 0:</p>
+
+<input id="PW" type="number" value="0.001" oninput="PWtoPdB()">Watt
+<input id="PdB" type="number" value="0" oninput="PdBtoPW()">dB
+
+<script>
+function PWtoPdB() {
+  var x, text;
+
+  // Get the value of the input field with id="numb"
+  x = document.getElementById("PW").value;
+
+  // If x is Not a Number or less than one or greater than 10
+  if (isNaN(x) || x < 0) {
+    text = "0";
+  } else {
+    text = 10*Math.log10(x*1000) + "" ;
+  }
+  document.getElementById("PdB").value = text;
+}
+function PdBtoPW() {
+  var x, text;
+
+  // Get the value of the input field with id="numb"
+  x = document.getElementById("PdB").value;
+
+  // If x is Not a Number or less than one or greater than 10
+  if (isNaN(x) || x < 0) {
+    text = "0";
+  } else {
+    text = Math.pow(10, x/10)/1000+ "" ;
+  }
+  document.getElementById("PW").value = text;
+}
+</script>
+
+</body>
+</html> 
