@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Text To Ascii</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</head>
+<body>
+
+<div class="container">
+  <h2>Text to ascii</h2>
+  <form action="/action_page.php">
+    <div class="form-group">
+      <label for="regularText">Input text:</label>
+      <textarea  type="number" class="form-control" id="regularText" name="Power in Watt" oninput="TextToAscii()">Hello Computer!</textarea>
+    </div>
+
+    
+    <div class="form-check-inline">
+      <label class="form-check-label" for="radio1">
+        <input type="radio" class="form-check-input" id="radio1" name="optradio" value="bin"  oninput="TextToAscii()">Binair</label>
+    </div>
+    <div class="form-check-inline">
+      <label class="form-check-label" for="radio2">
+        <input type="radio" class="form-check-input" id="radio2" name="optradio" value="dec" oninput="TextToAscii()">Decimal</label>
+    </div>
+    <div class="form-check-inline">
+      <label class="form-check-label" for="radio3">
+        <input type="radio" class="form-check-input" id="radio3" name="optradio" value="hex" checked oninput="TextToAscii()">Hexadecimal</label>
+    </div>
+    
+    <div class="form-check-inline">
+      <label for="delimiter">Delimiter: </label>
+      <input type="text" class="form-control" id="delimiter" value=" " oninput="TextToAscii()">
+    </div>  
+
+    <div class="form-group">
+      <label for="outputText">Output text:</label>
+      <textarea class="form-control" id="outputText" name="outputText" value="" ></textarea>
+    </div>
+    <!-- <button type="submit" class="btn btn-primary" oninput="TextToAscii()">Submit</button> -->
+  </form>
+</div>
+
+<script>
+function TextToAscii() {
+  var inputText, outputText, numerator, prefix, delimiter;
+
+  // Get the value of the input field with id="numb"
+  inputText = document.getElementById("regularText").value;
+  delimiter = document.getElementById("delimiter").value;
+
+  if(document.getElementById('radio1').checked == true) {
+    numerator = 2;
+    prefix = "0b";
+  } else if(document.getElementById('radio2').checked == true) {   
+      numerator = 10;
+      prefix = "";
+  } else if(document.getElementById('radio3').checked == true) {   
+        numerator = 16;
+        prefix = "0x";
+  }
+
+  console.log("numerator = " + numerator);
+
+
+  // If x is Not a Number or less than one or greater than 10
+/*   if (isNaN(x) || x < 0) {
+    text = "0";
+  } else {
+    text = 10*Math.log10(x*1000) + "" ;
+  } */
+  
+  outputText = "";
+  for (var i = 0; i < inputText.length; i++) {
+    outputText += prefix;
+    outputText += inputText.charCodeAt(i).toString(numerator);
+    if(i < inputText.length){
+      outputText += delimiter;
+    } 
+  }
+  document.getElementById("outputText").value = outputText;
+}
+
+/* function PdBtoPW() {
+  var x, text;
+
+  // Get the value of the input field with id="numb"
+  x = document.getElementById("PdB").value;
+
+  // If x is Not a Number or less than one or greater than 10
+  if (isNaN(x) ) {
+    text = "0";
+  } else {
+    text = Math.pow(10, x/10)/1000+ "" ;
+  }
+  document.getElementById("PW").value = text;
+} */
+</script>
+
+</body>
+</html>
