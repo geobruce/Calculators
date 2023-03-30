@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Image to Grayscale Converter</title>
+    <style>
+      form {
+        margin: 20px;
+      }
+
+      canvas {
+        display: none;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Image to Grayscale Converter</h1>
+    <form>
+      <input type="file" accept="image/*" onchange="handleImageUpload(event)">
+      <div>
+        <label for="rows">Rows:</label>
+        <input type="range" id="rows" name="rows" min="10" max="100" value="50" oninput="handleSliderChange(event)">
+      </div>
+      <div>
+        <label for="columns">Columns:</label>
+        <input type="range" id="columns" name="columns" min="10" max="100" value="50" oninput="handleSliderChange(event)">
+      </div>
+      <div>
+        <label for="columns">Columns:</label>
+        <input type="checkbox" id="horns" name="horns" oninput="handleSliderChange(event)">
+      </div>
+     
+      <canvas id="canvas"></canvas>
+    </form>
+    <script>
+      let rows = 50;
+      let columns = 50;
+
+      function handleImageUpload(event) {
+        const file = event.target.files[0];
+        const reader = new FileReader();
+
+        reader.onload = function(event) {
+          const img = new Image();
+          img.onload = function() {
+            const canvas = document.getElementById('canvas');
+            const ctx = canvas.getContext('2d');
+            const cellWidth = Math.ceil(img.width / columns);
+            const cellHeight = Math.ceil(img.height / rows);
+            canvas.width = cellWidth * columns;
+            canvas.height = cellHeight * rows;
+            for (let row = 0; row < rows; row++) {
+              for (let col = 0; col < columns; col++) {
+                const x = col * cellWidth;
+                const y = row * cellHeight;
+                ctx.drawImage(img, x, y, cellWidth, cellHeight, x, y, cellWidth, cellHeight);
+                const imageData = ctx.getImageData(x, y, cellWidth, cellHeight);
+                const data = imageData.data;
+                let totalBrightness = 0;
+                for (let i = 0; i < data.length; i += 4) {
+                  const brightness = (data[i] + data[i + 1] + data[i + 2]) / 3;
+                  totalBrightness += brightness;
+                }
+                const averageBrightness = totalBrightness / (data.length / 4);
+                const averageColor = `rgb(${0}, ${0}, ${0})`;
+                ctx.fillStyle = averageColor;
+                ctx.beginPath();
+                
+                ctx.ellipse(x + cellWidth / 2, y + cellHeight / 2, cellWidth / 2 * (1 - averageBrightness/255), cellHeight / 2 * (1 - averageBrightness/255), 0, 0, Math.PI * 2);
+                ctx.fill();
+              }
+            }
+            canvas.style.display = 'block';
+          };
+          img.src = event.target.result;
+        };
+
+        reader.readAsDataURL(file);
+      }
+
+      function handleSliderChange(event) {
+        if (event.target.id === 'rows') {
+          rows = parseInt(event.target.value);
+        } else if (event.target.id === 'columns') {
+          columns = parseInt(event.target.value);
+        }
+        handleImageUpload({ target: { files: [document.querySelector('input[type=file]').files[0]] } });
+      }
+    </script>
+  </body>
+</html>
