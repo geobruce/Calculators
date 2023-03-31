@@ -2,6 +2,8 @@
 <html>
   <head>
     <title>Image to Grayscale Converter</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
     <style>
       form {
         margin: 20px;
@@ -13,24 +15,31 @@
     </style>
   </head>
   <body>
-    <h1>Image to Grayscale Converter</h1>
-    <form>
-      <input type="file" accept="image/*" onchange="handleImageUpload(event)">
-      <div>
-        <label for="rows">Rows:</label>
-        <input type="range" id="rows" name="rows" min="10" max="100" value="50" oninput="handleSliderChange(event)">
-      </div>
-      <div>
-        <label for="columns">Columns:</label>
-        <input type="range" id="columns" name="columns" min="10" max="100" value="50" oninput="handleSliderChange(event)">
-      </div>
-      <div>
-        <label for="columns">Columns:</label>
-        <input type="checkbox" id="horns" name="horns" oninput="handleSliderChange(event)">
-      </div>
-     
-      <canvas id="canvas"></canvas>
-    </form>
+    <div class="container">
+      <h1 class="mt-4 mb-4">Image to Grayscale Converter</h1>
+      <form>
+        <div class="form-group">
+          <label for="image">Choose an image:</label>
+          <input type="file" class="form-control-file" id="image" accept="image/*" onchange="handleImageUpload(event)">
+        </div>
+        <div class="form-group">
+          <label for="rows">Rows:</label>
+          <input type="range" class="form-control-range" id="rows" name="rows" min="10" max="100" value="50" oninput="handleSliderChange(event)">
+        </div>
+        <div class="form-group">
+          <label for="columns">Columns:</label>
+          <input type="range" class="form-control-range" id="columns" name="columns" min="10" max="100" value="50" oninput="handleSliderChange(event)">
+        </div>
+        <div class="form-group form-check">
+          <input type="checkbox" class="form-check-input" id="horns" name="horns" oninput="handleSliderChange(event)">
+          <label class="form-check-label" for="horns">Add horns</label>
+        </div>
+        <canvas id="canvas"></canvas>
+      </form>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
     <script>
       let rows = 50;
       let columns = 50;
