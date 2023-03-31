@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Text to SMS keypad (multitap)</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</head>
+<body>
+
+<div class="container">
+  <h2>Text to SMS keypad (multitap)</h2>
+  <form action="/action_page.php">
+    <div class="form-group">
+      <label for="regularText">Input text:</label>
+      <textarea  type="number" class="form-control" id="regularText" name="Power in Watt" oninput="TextToAscii()">Hello Computer!</textarea>
+    </div>
+
+    
+    <div class="form-check-inline">
+      <label class="form-check-label" for="radio1">
+        <input type="radio" class="form-check-input" id="radio1" name="optradio" value="space"  oninput="TextToAscii()" checked>Space</label>
+    </div>
+    <div class="form-check-inline">
+      <label class="form-check-label" for="radio2">
+        <input type="radio" class="form-check-input" id="radio2" name="optradio" value="noSpace" oninput="TextToAscii()">No Space</label>
+    </div>
+ 
+
+    <div class="form-group">
+      <label for="outputText">Output text:</label>
+      <textarea class="form-control" id="outputText" name="outputText" value="" ></textarea>
+    </div>
+    <!-- <button type="submit" class="btn btn-primary" oninput="TextToAscii()">Submit</button> -->
+  </form>
+</div>
+
+<script>
+    const multiTapToText = new Map([
+    ["a","2"],
+    ["b","22"],
+    ["c","222"],
+    ["d","3"],
+    ["e","33"],
+    ["f","333"],
+    ["g","4"],
+    ["h","44"],
+    ["i","444"],
+    ["j","5"],
+    ["k","55"],
+    ["l","555"],
+    ["m","6"],
+    ["n","66"],
+    ["o","666"],
+    ["p","7"],
+    ["q","77"],
+    ["r","777"],
+    ["s","7777"],
+    ["t","8"],
+    ["u","88"],
+    ["v","888"],
+    ["w","9"],
+    ["x","99"],
+    ["y","999"],
+    ["z","9999"],
+    [" ","0"]
+  ]);
+function TextToAscii() {
+
+
+  var inputText, outputText, numerator, prefix, delimiter;
+
+  // Get the value of the input field with id="numb"
+  inputText = document.getElementById("regularText").value.toLowerCase();
+
+
+  if(document.getElementById('radio1').checked == true) {
+    prefix = " ";
+  } else if(document.getElementById('radio2').checked == true) {   
+      prefix = "";
+  } 
+
+  console.log("numerator = " + numerator);
+
+
+  // If x is Not a Number or less than one or greater than 10
+/*   if (isNaN(x) || x < 0) {
+    text = "0";
+  } else {
+    text = 10*Math.log10(x*1000) + "" ;
+  } */
+  
+  outputText = "";
+  for (var i = 0; i < inputText.length; i++) {
+    
+    outputText += multiTapToText.get(inputText[i]);
+    if(i < inputText.length){
+      outputText += prefix;
+    } 
+  }
+  document.getElementById("outputText").value = outputText;
+}
+
+/* function PdBtoPW() {
+  var x, text;
+
+  // Get the value of the input field with id="numb"
+  x = document.getElementById("PdB").value;
+
+  // If x is Not a Number or less than one or greater than 10
+  if (isNaN(x) ) {
+    text = "0";
+  } else {
+    text = Math.pow(10, x/10)/1000+ "" ;
+  }
+  document.getElementById("PW").value = text;
+} */
+</script>
+
+</body>
+</html>

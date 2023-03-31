@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Grayscale Image Converter</title>
+  <style>
+    #sliderM, #sliderN {
+      width: 100%;
+    }
+  </style>
+</head>
+<body>
+  <input type="file" id="fileInput">
+  <br>
+  <canvas id="canvas"></canvas>
+  <br>
+  <label for="sliderM">Number of rows (m):</label>
+  <input type="range" min="10" max="100" value="50" id="sliderM">
+  <br>
+  <label for="sliderN">Number of columns (n):</label>
+  <input type="range" min="10" max="100" value="50" id="sliderN">
+  
+  <script>
+    const canvas = document.getElementById("canvas");
+    const ctx = canvas.getContext("2d");
+    const fileInput = document.getElementById("fileInput");
+    const sliderM = document.getElementById("sliderM");
+    const sliderN = document.getElementById("sliderN");
+    let imageData, data, img;
+    
+    function convertToGrayscale() {
+      // convert the image to grayscale
+      for (let i = 0; i < data.length; i += 4) {
+        const gray = (data[i] + data[i+1] + data[i+2]) / 3;
+        data[i] = gray;
+        data[i+1] = gray;
+        data[i+2] = gray;
+      }
+    }
+    function clearCanvas() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+    }
+    function drawGrid() {
+      // draw the grid on the canvas
+      const m = parseInt(sliderM.value);
+      const n = parseInt(sliderN.value);
+      const cellWidth = canvas.width / n;
+      const cellHeight = canvas.height / m;
+      ctx.strokeStyle = "red";
+      ctx.lineWidth = 2;
+      for (let i = 1; i < n; i++) {
+        ctx.beginPath();
+        ctx.moveTo(i * cellWidth, 0);
+        ctx.lineTo(i * cellWidth, canvas.height);
+        ctx.stroke();
+      }
+      for (let i = 1; i < m; i++) {
+        ctx.beginPath();
+        ctx.moveTo(0, i * cellHeight);
+        ctx.lineTo(canvas.width, i * cellHeight);
+        ctx.stroke();
+      }
+    }
+    function drawImage(){
+        // draw the image on the canvas
+        ctx.drawImage(img, 0, 0);
+          
+          // get the image data
+          imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+          data = imageData.data;
+    }
+    fileInput.addEventListener("change", function() {
+      const file = fileInput.files[0];
+      const reader = new FileReader();
+      
+      reader.addEventListener("load", function() {
+        img = new Image();
+        img.addEventListener("load", function() {
+          canvas.width = img.width;
+          canvas.height = img.height;
+          
+          // draw the image on the canvas
+          ctx.drawImage(img, 0, 0);
+          
+          // get the image data
+          imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+          data = imageData.data;
+          
+          convertToGrayscale();
+          drawGrid();
+        });
+        img.src = reader.result;
+      });
+      reader.readAsDataURL(file);
+    });
+    
+    sliderM.addEventListener("input", function() {
+    	clearCanvas();
+        drawImage();
+      convertToGrayscale();
+      drawGrid();
+    });
+    
+    sliderN.addEventListener("input", function() {
+    clearCanvas();
+ drawImage();
+      convertToGrayscale();
+      drawGrid();
+    });
+  </script>
+</body>
+</html>
