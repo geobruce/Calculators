@@ -87,7 +87,9 @@
                 const centerX = col * cellWidth + cellWidth / 2;
                 const centerY = row * cellHeight + cellHeight / 2;
                 ctx.beginPath();
-                ctx.ellipse(centerX, centerY, cellWidth / 2 * (1 - averageBrightness / 255), cellHeight / 2 * (1 - averageBrightness / 255), 0, 0, Math.PI * 2);
+                if(centerX + cellWidth/2 < img.width && centerY + cellHeight /2 < img.height){
+                  ctx.ellipse(centerX, centerY, cellWidth / 2 * (1 - averageBrightness / 255), cellHeight / 2 * (1 - averageBrightness / 255), 0, 0, Math.PI * 2);
+                }
                 ctx.fill();
               }
               canvas.style.display = 'block';
